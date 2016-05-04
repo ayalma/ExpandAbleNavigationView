@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    >
+    <LinearLayout
+        android:clickable="true"
+        android:id="@+id/nav_subContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <View
+            android:id="@+id/nav_subDivider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#B6B6B6"/>
+        <TextView
+            android:id="@+id/nav_subTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="15dp"
+            android:layout_gravity="right"
+            android:text="دیگر"
+            android:textSize="20sp"
+            android:padding="@dimen/nav_padding_half"/>
+    </LinearLayout>
+    <RelativeLayout
+
+        android:clickable="true"
+        android:layout_below="@+id/nav_subContainer"
+        android:id="@+id/nav_itemContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_toLeftOf="@+id/nav_itemIcon"
+            android:paddingLeft="@dimen/ayalma_padding"
+            android:paddingRight="@dimen/ayalma_padding"
+            android:id="@+id/nav_itemText"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/ayalma_toolbarHeight"
+            />
+
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:id="@+id/nav_itemIcon"
+            android:padding="@dimen/ayalma_padding"
+            android:layout_width="@dimen/ayalma_toolbarHeight"
+            android:layout_height="@dimen/ayalma_toolbarHeight"
+            tools:ignore="RtlHardcoded" />
+    </RelativeLayout>
+
+</RelativeLayout>

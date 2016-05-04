@@ -1,0 +1,25 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_itemContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/nav_subContainer"
+    android:clickable="true"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/nav_itemIcon"
+        android:layout_width="@dimen/ayalma_toolbarHeight"
+        android:layout_height="@dimen/ayalma_toolbarHeight"
+        android:padding="@dimen/ayalma_padding"
+        tools:ignore="RtlHardcoded" />
+
+    <TextView
+        android:id="@+id/nav_itemText"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/ayalma_toolbarHeight"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/ayalma_padding"
+        android:paddingRight="@dimen/ayalma_padding" />
+</LinearLayout>

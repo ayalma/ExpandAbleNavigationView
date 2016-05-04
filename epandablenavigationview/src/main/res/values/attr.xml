@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="NavigationView">
+        <attr name="headerLayout" format="reference"/>
+        <attr name="menu" format="reference"/>
+        <attr name="itemRippleColor" format="color"/>
+        <attr name="itemBackgroundColor" format="color"/>
+        <attr name="itemIconTint" format="color"/>
+        <attr name="itemTextColor" format="color"/>
+        <attr name="itemTextAppearance" format="reference"/>
+    </declare-styleable>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="ayalma_toolbarHeight">56dp</dimen>
+    <dimen name="ayalma_padding">16dp</dimen>
+    <dimen name="nav_padding_half">8dp</dimen>
+    <dimen name="nav_iconSize">24dp</dimen>
+    <dimen name="nav_margin">16dp</dimen>
+</resources>
