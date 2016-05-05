@@ -9,6 +9,7 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.os.Build;
+import android.view.animation.RotateAnimation;
 
 import java.util.Arrays;
 
@@ -55,5 +56,17 @@ public class Util {
         states.addState(new int[]{},
                 new ColorDrawable(normalColor));
         return states;
+    }
+
+    public static RotateAnimation getRotateAnim(float fromDegree,float toDegree,long duration)
+    {
+         RotateAnimation rotateAnim = new RotateAnimation(fromDegree, toDegree,
+                RotateAnimation.RELATIVE_TO_SELF, 0.5f,
+                RotateAnimation.RELATIVE_TO_SELF, 0.5f);
+
+        rotateAnim.setDuration(duration);
+        rotateAnim.setFillAfter(true);
+
+        return rotateAnim;
     }
 }

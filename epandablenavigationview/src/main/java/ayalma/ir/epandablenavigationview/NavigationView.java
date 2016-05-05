@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.support.v7.view.menu.MenuBuilder;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -15,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -42,30 +44,31 @@ public class NavigationView extends RecyclerView {
 
     private void initNavigationView(AttributeSet attrs) {
         setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-
-        TypedArray a = getContext().obtainStyledAttributes(attrs,R.styleable.NavigationView);
         setClipToPadding(false);
+        setItemAnimator(new DefaultItemAnimator());
+        if (attrs != null) {
+            TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.NavigationView);
 
-        for (int i = 0; i < a.getIndexCount(); i++)
-        {
-            int attr = a.getIndex(i);
+            for (int i = 0; i < a.getIndexCount(); i++) {
+                int attr = a.getIndex(i);
 
-            if (attr == R.styleable.NavigationView_headerLayout)
-            {
-                int header = a.getResourceId(attr,-1);
-                if (header!=-1)
-                {
-                    setHeader(header);
+                if (attr == R.styleable.NavigationView_headerLayout) {
+                    int header = a.getResourceId(attr, -1);
+                    if (header != -1) {
+                        setHeader(header);
 
-                    //add this line for removing extra space from header top.
-                    if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                        addItemDecoration(new SpaceItemDecoration((int) getResources().getDimension(R.dimen.status_barHeight)));
+                        //add this line for removing extra space from header top.
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                            addItemDecoration(new SpaceItemDecoration((int) getResources().getDimension(R.dimen.status_barHeight)));
+                    }
                 }
+
             }
+
+            a.recycle();
 
         }
 
-        a.recycle();
 
     }
 
@@ -79,10 +82,9 @@ public class NavigationView extends RecyclerView {
         ((Adapter) getAdapter()).setItems(menu);
     }
 
-    public void setHeader(int resId)
-    {
-       if (getAdapter() == null)
-           setAdapter(new Adapter());
+    public void setHeader(int resId) {
+        if (getAdapter() == null)
+            setAdapter(new Adapter());
 
         ((Adapter) getAdapter()).setHeader(resId);
 
@@ -117,7 +119,7 @@ public class NavigationView extends RecyclerView {
                     postion += getChildItemCount(i);
             }
 
-            postion++;
+            postion += 2;
             notifyItemRangeInserted(postion, getChildItemCount(group)); // notify recycler view for expanding
             expanded.put(group, true); // save expanding in sparce array
         }
@@ -137,7 +139,7 @@ public class NavigationView extends RecyclerView {
                     postion += getChildItemCount(i);
             }
 
-            postion++;
+            postion += 2;
 
             notifyItemRangeRemoved(postion, getChildItemCount(group)); // notify recycler view for expanding
             expanded.put(group, false); // save expanding in sparce array
@@ -201,6 +203,8 @@ public class NavigationView extends RecyclerView {
         }
 
         private void onBindGruopViewHolder(final GroupViewHolder holder, final int group) {
+            holder.setExpanded(isExpanded(group));
+
             holder.tv.setText(items.getItem(group).getTitle());
             if (items.getItem(group).getIcon() != null)
                 holder.iv.setImageDrawable(items.getItem(group).getIcon());
@@ -209,8 +213,13 @@ public class NavigationView extends RecyclerView {
             holder.itemView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (isExpanded(group)) collapse(group);
-                    else expand(group);
+                    if (isExpanded(group)) {
+                        collapse(group);
+                        holder.collapse();
+                    } else {
+                        expand(group);
+                        holder.expand();
+                    }
                 }
             });
         }
@@ -230,7 +239,7 @@ public class NavigationView extends RecyclerView {
         public int getItemCount() {
             int size = 0;
 
-            if (headerView !=0 )
+            if (headerView != 0)
                 size++;
 
             for (int i = 0; i < items.size(); i++) {
@@ -312,10 +321,13 @@ public class NavigationView extends RecyclerView {
         }
 
         public void expand() {
+
+            indicatorIv.startAnimation(Util.getRotateAnim(0f, 180f, 200));
             expanded = true;
         }
 
         public void collapse() {
+            indicatorIv.startAnimation(Util.getRotateAnim(180f, 0f, 200));
             expanded = false;
         }
 
@@ -323,7 +335,13 @@ public class NavigationView extends RecyclerView {
             return expanded;
         }
 
-        public void setExpanded(boolean expanded) {
+        public void setExpanded(boolean expanded)
+        {
+            if (expanded)
+                indicatorIv.startAnimation(Util.getRotateAnim(0f, 180f, 200));
+            else
+                indicatorIv.startAnimation(Util.getRotateAnim(180f, 0f, 200));
+
             this.expanded = expanded;
         }
 
