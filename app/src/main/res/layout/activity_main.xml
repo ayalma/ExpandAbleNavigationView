@@ -37,5 +37,9 @@
         android:layout_gravity="right"
         android:background="#fefefe"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_main"/>
+        app:headerLayout="@layout/nav_header_main"
+        app:itemTextColor="@color/colorAccent"
+        app:itemIconTint="@color/colorPrimary"
+        app:itemRippleColor="@color/colorPrimary"
+        app:itemBackgroundColor="#fefefe"/>
 </android.support.v4.widget.DrawerLayout>

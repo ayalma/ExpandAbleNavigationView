@@ -16,7 +16,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,6 +25,7 @@ import android.widget.TextView;
  * @author alimohammadi.
  */
 public class NavigationView extends RecyclerView {
+
 
     public NavigationView(Context context) {
         super(context);
@@ -62,6 +62,23 @@ public class NavigationView extends RecyclerView {
                             addItemDecoration(new SpaceItemDecoration((int) getResources().getDimension(R.dimen.status_barHeight)));
                     }
                 }
+                if (attr == R.styleable.NavigationView_itemTextColor)
+                {
+                    setItemTextColor(a.getColor(attr,0));
+                }
+                if (attr == R.styleable.NavigationView_itemIconTint)
+                {
+                    setItemIconTint(a.getColor(attr,0));
+                }
+                if (attr == R.styleable.NavigationView_itemRippleColor)
+                {
+                    setItemRippleColor(a.getColor(attr,0));
+                }
+                if (attr == R.styleable.NavigationView_itemBackgroundColor)
+                {
+                    setItemBackgroundColor(a.getColor(attr,0));
+                }
+                //if (attr == R.styleable.NavigationView_itemTextAppearance);
 
             }
 
@@ -90,11 +107,46 @@ public class NavigationView extends RecyclerView {
 
     }
 
+    public void setItemTextColor(int itemTextColor) {
+        if (getAdapter() == null)
+            setAdapter(new Adapter());
+
+        ((Adapter) getAdapter()).setItemTextColor(itemTextColor);
+    }
+
+    public void setItemIconTint(int itemIconTint)
+    {
+        if (getAdapter() == null)
+            setAdapter(new Adapter());
+
+        ((Adapter) getAdapter()).setItemIconTint(itemIconTint);
+    }
+
+    public void setItemRippleColor(int itemRippleColor)
+    {
+        if (getAdapter() == null)
+            setAdapter(new Adapter());
+
+        ((Adapter) getAdapter()).setItemRippleColor(itemRippleColor);
+    }
+
+    public void setItemBackgroundColor(int itemBackgroundColor) {
+        if (getAdapter() == null)
+            setAdapter(new Adapter());
+
+        ((Adapter) getAdapter()).setItemBackgroundColor(itemBackgroundColor);
+    }
+
     private static class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
         private Menu items = null;
         private int headerView = 0;
 
         private SparseBooleanArray expanded = new SparseBooleanArray();
+        private int itemTextColor;
+        private int itemIconTint;
+        private int itemRippleColor;
+        private int itemBackgroundColor;
 
         boolean isExpanded(int group) {
             return expanded.get(group);
@@ -205,6 +257,18 @@ public class NavigationView extends RecyclerView {
         private void onBindGruopViewHolder(final GroupViewHolder holder, final int group) {
             holder.setExpanded(isExpanded(group));
 
+            if (itemBackgroundColor !=0 && itemRippleColor!=0)
+                Util.setRippleColor(itemRippleColor, itemBackgroundColor,holder.itemView);
+
+            if (itemIconTint !=0)
+                holder.indicatorIv.setColorFilter(itemIconTint);
+
+            if (itemTextColor!=0)
+                holder.tv.setTextColor(itemTextColor);
+
+            if (itemIconTint!=0)
+                holder.iv.setColorFilter(itemIconTint);
+
             holder.tv.setText(items.getItem(group).getTitle());
             if (items.getItem(group).getIcon() != null)
                 holder.iv.setImageDrawable(items.getItem(group).getIcon());
@@ -225,6 +289,16 @@ public class NavigationView extends RecyclerView {
         }
 
         private void onBindItemViewHolder(ItemViewHolder holder, int group, int child) {
+
+            if (itemBackgroundColor !=0 && itemRippleColor!=0)
+                Util.setRippleColor(itemRippleColor, itemBackgroundColor,holder.itemView);
+
+            if (itemTextColor!=0)
+                holder.tv.setTextColor(itemTextColor);
+
+            if (itemIconTint!=0)
+                holder.iv.setColorFilter(itemIconTint);
+
             holder.tv.setText(getChildItem(group, child).getTitle());
             holder.iv.setImageDrawable(getChildItem(group, child).getIcon());
         }
@@ -294,6 +368,34 @@ public class NavigationView extends RecyclerView {
 
         public void setHeader(int headerView) {
             this.headerView = headerView;
+        }
+
+        public void setItemTextColor(int itemTextColor) {
+            this.itemTextColor = itemTextColor;
+        }
+
+        public int getItemIconTint() {
+            return itemIconTint;
+        }
+
+        public void setItemIconTint(int itemIconTint) {
+            this.itemIconTint = itemIconTint;
+        }
+
+        public int getItemRippleColor() {
+            return itemRippleColor;
+        }
+
+        public void setItemRippleColor(int itemRippleColor) {
+            this.itemRippleColor = itemRippleColor;
+        }
+
+        public int getItemBackgroundColor() {
+            return itemBackgroundColor;
+        }
+
+        public void setItemBackgroundColor(int itemBackgroundColor) {
+            this.itemBackgroundColor = itemBackgroundColor;
         }
     }
 

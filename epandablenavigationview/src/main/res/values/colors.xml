@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="enav_itemTextColor">#000000</color>
+    <color name="enav_itemIconTint">#303F9F</color>
+    <color name="enav_itemBackground">#FF4081</color>
+    <color name="enav_itemRippleColor">#fc9d00</color>
+</resources>

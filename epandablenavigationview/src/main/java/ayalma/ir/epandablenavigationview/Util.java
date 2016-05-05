@@ -9,6 +9,7 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.os.Build;
+import android.view.View;
 import android.view.animation.RotateAnimation;
 
 import java.util.Arrays;
@@ -21,15 +22,13 @@ import java.util.Arrays;
 public class Util {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public static Drawable getPressedColorRippleDrawable(int normalColor, int pressedColor)
-    {
+    public static Drawable getPressedColorRippleDrawable(int normalColor, int pressedColor) {
         return new RippleDrawable(ColorStateList.valueOf(pressedColor),
                 null, getRippleMask(normalColor));
     }
 
 
-    public static ColorDrawable getColorDrawableFromColor(int color)
-    {
+    public static ColorDrawable getColorDrawableFromColor(int color) {
         return new ColorDrawable(color);
     }
 
@@ -58,9 +57,8 @@ public class Util {
         return states;
     }
 
-    public static RotateAnimation getRotateAnim(float fromDegree,float toDegree,long duration)
-    {
-         RotateAnimation rotateAnim = new RotateAnimation(fromDegree, toDegree,
+    public static RotateAnimation getRotateAnim(float fromDegree, float toDegree, long duration) {
+        RotateAnimation rotateAnim = new RotateAnimation(fromDegree, toDegree,
                 RotateAnimation.RELATIVE_TO_SELF, 0.5f,
                 RotateAnimation.RELATIVE_TO_SELF, 0.5f);
 
@@ -68,5 +66,17 @@ public class Util {
         rotateAnim.setFillAfter(true);
 
         return rotateAnim;
+    }
+
+    public static void setRippleColor(int rippleColor, int backColor, View view) {
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            view.setBackgroundColor(backColor);
+            view.setBackgroundColor(backColor);
+            view.setBackground(Util.getPressedColorRippleDrawable(backColor, rippleColor));
+        } else {
+            view.setBackgroundColor(backColor);
+            view.setBackgroundDrawable(Util.getStateListDrawable(backColor, rippleColor));
+        }
     }
 }
