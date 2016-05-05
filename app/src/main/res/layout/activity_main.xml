@@ -35,5 +35,7 @@
         android:layout_width="280dp"
         android:layout_height="match_parent"
         android:layout_gravity="right"
-        android:background="#fefefe"/>
+        android:background="#fefefe"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/nav_header_main"/>
 </android.support.v4.widget.DrawerLayout>

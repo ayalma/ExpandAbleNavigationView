@@ -1,6 +1,7 @@
 package ayalma.ir.epandablenavigationview;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -41,6 +42,21 @@ public class NavigationView extends RecyclerView {
     private void initNavigationView(AttributeSet attrs) {
         setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
+        TypedArray a = getContext().obtainStyledAttributes(attrs,R.styleable.NavigationView);
+
+        for (int i = 0; i < a.getIndexCount(); i++)
+        {
+            int attr = a.getIndex(i);
+
+            if (attr == R.styleable.NavigationView_headerLayout)
+            {
+                int header = a.getResourceId(attr,-1);
+                if (header!=-1)
+                    setHeader(header);
+            }
+
+        }
+
     }
 
     public void setMenu(int resId) {
@@ -51,6 +67,15 @@ public class NavigationView extends RecyclerView {
         if (getAdapter() == null)
             setAdapter(new Adapter());
         ((Adapter) getAdapter()).setItems(menu);
+    }
+
+    public void setHeader(int resId)
+    {
+       if (getAdapter() == null)
+           setAdapter(new Adapter());
+
+        ((Adapter) getAdapter()).setHeader(resId);
+
     }
 
     private static class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -112,10 +137,10 @@ public class NavigationView extends RecyclerView {
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view;
 
-            if (viewType == ViewHolderType.Header.getValue()) {
+            if (viewType == ViewType.Header.getValue()) {
                 view = LayoutInflater.from(parent.getContext()).inflate(headerView, parent, false);
                 return new HeaderViewHolder(view);
-            } else if (viewType == ViewHolderType.Group.getValue()) {
+            } else if (viewType == ViewType.Group.getValue()) {
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.nav_group_row, parent, false);
                 return new GroupViewHolder(view);
             } else {
@@ -130,12 +155,14 @@ public class NavigationView extends RecyclerView {
             if (headerView != 0 && position == 0)
                 return;
 
+            if (headerView != 0)
+                position--;
+
             for (int group = 0; group <= items.size(); ) {
                 if (items.getItem(group).hasSubMenu()) {
                     if (position > 0 && !isExpanded(group)) {
                         position--;
                         group++;
-                        continue;
                     } else if (position > 0) {
                         position--;
                         if (position < getChildItemCount(group)) {
@@ -145,7 +172,6 @@ public class NavigationView extends RecyclerView {
                         }
                         position -= getChildItemCount(group);
                         group++;
-                        continue;
                     } else {
                         Log.d("TAG", "pos:" + position + "group:" + group);
                         onBindGruopViewHolder((GroupViewHolder) holder, group);
@@ -165,7 +191,10 @@ public class NavigationView extends RecyclerView {
         }
 
         private void onBindGruopViewHolder(final GroupViewHolder holder, final int group) {
-            holder.tv.setText("group:" + group);
+            holder.tv.setText(items.getItem(group).getTitle());
+            if (items.getItem(group).getIcon() != null)
+                holder.iv.setImageDrawable(items.getItem(group).getIcon());
+            else holder.iv.setVisibility(GONE);
 
             holder.itemView.setOnClickListener(new OnClickListener() {
                 @Override
@@ -190,6 +219,10 @@ public class NavigationView extends RecyclerView {
         @Override
         public int getItemCount() {
             int size = 0;
+
+            if (headerView !=0 )
+                size++;
+
             for (int i = 0; i < items.size(); i++) {
                 size++;
                 if (items.getItem(i).hasSubMenu() && isExpanded(i))
@@ -206,58 +239,29 @@ public class NavigationView extends RecyclerView {
         @Override
         public int getItemViewType(int position) {
             if (headerView != 0 && position == 0)
-                return ViewHolderType.Header.getValue();
+                return ViewType.Header.getValue();
+
+            if (headerView != 0)
+                position--;
 
             for (int group = 0; group <= items.size(); ) {
                 if (items.getItem(group).hasSubMenu()) {
                     if (position > 0 && !isExpanded(group)) {
                         position--;
                         group++;
-                        continue;
                     } else if (position > 0) {
                         position--;
                         if (position < getChildItemCount(group))
-                            return ViewHolderType.Item.getValue();
+                            return ViewType.Item.getValue();
                         position -= getChildItemCount(group);
                         group++;
-                        continue;
-                    } else return ViewHolderType.Group.getValue();
+                    } else return ViewType.Group.getValue();
                 } else if (position > 0) {
                     group++;
                     position--;
-                } else return ViewHolderType.Item.getValue();
+                } else return ViewType.Item.getValue();
             }
-           /* int group = 0;
-            while (group < items.size())
-            {
-                if (items.getItem(group).hasSubMenu())
-                {
-                    if (!isExpanded(group)) {
-                        Log.d("TAG","pos:"+ position +"group:" +group);
-                        position--;
-                        group++;
-                        continue;
-                    } else  {
-                        Log.d("TAG","pos:"+ position +"group:" +group);
-                        position--;
-                        if (position < getChildItemCount(group))
-                            return ViewHolderType.Item.getValue();
-                        position -= getChildItemCount(group);
-                        group++;
-                        continue;
-                    }
-                }
-                else
-                {
-                    if (position<items.size()-1)
-                        return  ViewHolderType.Item.getValue();
-                    else {
-                        position--;
-                        group++;
-                    }
 
-                }
-            }*/
             throw new IndexOutOfBoundsException();
         }
 
@@ -267,6 +271,10 @@ public class NavigationView extends RecyclerView {
 
         public void setItems(Menu items) {
             this.items = items;
+        }
+
+        public void setHeader(int headerView) {
+            this.headerView = headerView;
         }
     }
 

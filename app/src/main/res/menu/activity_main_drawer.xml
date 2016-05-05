@@ -9,16 +9,16 @@
         android:id="@+id/nav_gallery"
         android:icon="@drawable/ic_menu_gallery"
         android:title="Gallery" />
-    <item android:title="Communicate">
+    <item android:title="group1">
         <menu>
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:title="group1 Item1" />
             <item
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:title="group1 Item2" />
         </menu>
     </item>
 
@@ -31,30 +31,31 @@
         android:id="@+id/nav_manage"
         android:icon="@drawable/ic_menu_manage"/>
 
-    <item android:title="Communicate">
+    <item android:title="group2">
         <menu>
             <item
                 android:id="@+id/nav_share1"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:title="group2 Item1" />
             <item
                 android:id="@+id/nav_send1"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:title="group2 Item2" />
         </menu>
 
     </item>
 
-    <item android:title="Communicate">
+    <item android:title="group3"
+        android:icon="@drawable/ic_expand_more_24dp">
         <menu>
             <item
                 android:id="@+id/nav_sharef1"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:title="group3 Item1" />
             <item
                 android:id="@+id/nav_sefnd1"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:title="group3 Item2" />
         </menu>
 
     </item>
