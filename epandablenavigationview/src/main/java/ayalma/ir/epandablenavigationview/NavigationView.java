@@ -2,6 +2,7 @@ package ayalma.ir.epandablenavigationview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -43,6 +44,7 @@ public class NavigationView extends RecyclerView {
         setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
         TypedArray a = getContext().obtainStyledAttributes(attrs,R.styleable.NavigationView);
+        setClipToPadding(false);
 
         for (int i = 0; i < a.getIndexCount(); i++)
         {
@@ -52,10 +54,18 @@ public class NavigationView extends RecyclerView {
             {
                 int header = a.getResourceId(attr,-1);
                 if (header!=-1)
+                {
                     setHeader(header);
+
+                    //add this line for removing extra space from header top.
+                    if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                        addItemDecoration(new SpaceItemDecoration((int) getResources().getDimension(R.dimen.status_barHeight)));
+                }
             }
 
         }
+
+        a.recycle();
 
     }
 
@@ -331,4 +341,6 @@ public class NavigationView extends RecyclerView {
             iv = (ImageView) itemView.findViewById(R.id.nav_itemIcon);
         }
     }
+
+
 }

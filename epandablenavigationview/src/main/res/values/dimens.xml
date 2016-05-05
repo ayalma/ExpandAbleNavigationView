@@ -5,4 +5,5 @@
     <dimen name="nav_padding_half">8dp</dimen>
     <dimen name="nav_iconSize">24dp</dimen>
     <dimen name="nav_margin">16dp</dimen>
+    <dimen name="status_barHeight">-24dp</dimen>
 </resources>
